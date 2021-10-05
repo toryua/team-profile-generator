@@ -7,7 +7,7 @@ test('creates an employee object', () => {
     const employee = new Employee('Rachel', 345, 'rachel@rachel.com');
 
     expect(employee.name).toBe('Rachel');
-    expect(employee.id).toBe(Number);
-    expect(employee.email).toBe(String);
+    expect(employee.id).toBe(345);
+    expect(employee.email).toBe('rachel@rachel.com');
     
 });
