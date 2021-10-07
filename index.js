@@ -23,26 +23,26 @@ function createEngineer() {
             type: 'input',
             name: 'engineerName',
             message: 'What is your name?'
-    },
-    {
+        },
+        {
             type: 'input',
             name: 'id',
             message: 'What is your ID number?'
-    },
-    {
+        },
+        {
             type: 'input',
             name: 'email',
             message: 'What is your email address?'
-    },
-    {
+        },
+        {
             type: 'input',
             name: 'github',
             message: 'What is your Github address?'
-    },
+        },
     ])
     .then(data => {
         //console.log(data);
-        JSON.stringify(data);
+        
         const engineer = new Engineer(data.engineerName, data.id, data.email, data.github);
         teamMembers.push(engineer);
         console.log(teamMembers);
@@ -55,26 +55,26 @@ function createIntern() {
             type: 'input',
             name: 'internName',
             message: 'What is your name?'
-    },
-    {
+        },
+        {
             type: 'input',
             name: 'id',
             message: 'What is your ID number?'
-    },
-    {
+        },
+        {
             type: 'input',
             name: 'email',
             message: 'What is your email address?'
-    },
-    {
+        },
+        {
             type: 'input',
             name: 'school',
             message: 'What is your school?'
-    },
+        },
     ])
     .then(data => {
         //console.log(data);
-        JSON.stringify(data);
+        
         const intern = new Intern(data.internName, data.id, data.email, data.school);
         teamMembers.push(intern);
         console.log(teamMembers);
@@ -106,14 +106,15 @@ function createManager() {
     ])
     .then(data => {
         //console.log(data);
-        JSON.stringify(data);
         const manager = new Manager(data.managerName, data.id, data.email, data.officeNumber);
         teamMembers.push(manager);
         console.log(teamMembers);
+        startStop();
     })
      
 }
 
+// create a function that will enter all team members and will stop when user picks "exit"
     function startStop() {
         inquirer.prompt([
             {
@@ -132,10 +133,10 @@ function createManager() {
             }
         })
     }
-fs.appendFile('./employeeDirectory.txt', teamMembers, function (err) {
-      if (err) throw err;
-      console.log('Saved!');
-    });
+// fs.appendFile('./employeeDirectory.txt', teamMembers, function (err) {
+//       if (err) throw err;
+//       console.log('Saved!');
+//     });
   
 
 // Create an array of questions for user input to determine role
@@ -147,14 +148,7 @@ const question1 = [
             choices: ['Yes', 'No']
     },   
 ]    
-const question2 = [    {
-            type: 'list',
-            name: 'userRole',
-            message: 'What would you like to enter next?',
-            choices: ['Engineer', 'Intern', 'Exit']
-    },
-    
-]
+
 // map information from array
 function createDirectory (){
     teamMembers.map(function() {
@@ -164,7 +158,7 @@ function createDirectory (){
 
 function init() {
     createManager();
-    startStop();
+    // startStop();
     // inquirer.prompt(question1)
     // .then (data => {
     //     if (data.managerQuestion === 'Yes') {
