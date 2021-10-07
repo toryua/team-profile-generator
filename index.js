@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 let fs = require('fs');
 let path = require('path');
+const teamMembers = [];
 
 // create parent class for Employee
 const Employee = require('./lib/Employee.js');
@@ -40,7 +41,11 @@ function createEngineer() {
     },
     ])
     .then(data => {
-        console.log(data);
+        //console.log(data);
+        JSON.stringify(data);
+        const engineer = new Engineer(data.engineerName, data.id, data.email, data.github);
+        teamMembers.push(engineer);
+        console.log(teamMembers);
     })
 }
 
@@ -68,7 +73,11 @@ function createIntern() {
     },
     ])
     .then(data => {
-        console.log(data);
+        //console.log(data);
+        JSON.stringify(data);
+        const intern = new Intern(data.internName, data.id, data.email, data.school);
+        teamMembers.push(intern);
+        console.log(teamMembers);
     })
 }
 
@@ -96,46 +105,85 @@ function createManager() {
         },
     ])
     .then(data => {
-      console.log(data);
+        //console.log(data);
+        JSON.stringify(data);
+        const manager = new Manager(data.managerName, data.id, data.email, data.officeNumber);
+        teamMembers.push(manager);
+        console.log(teamMembers);
     })
+     
 }
 
-// Create an array of questions for user input
+    function startStop() {
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'startStop',
+                message: 'Would you like to enter another team member?',
+                choices: ['Intern', 'Engineer', 'Exit']
+            }
+        ]) .then(data => {
+            if (data.choices === 'Intern') {
+                createIntern();
+            } else if (data.choices === 'Engineer') {
+                createEngineer();
+            } else {
+                createDirectory();
+            }
+        })
+    }
+fs.appendFile('./employeeDirectory.txt', teamMembers, function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+  
+
+// Create an array of questions for user input to determine role
 
 const question1 = [
     {       type: 'list',
             name: 'managerQuestion',
-            message: 'Are you the manager?',
+            message: 'Are you ready to enter the manager information?',
             choices: ['Yes', 'No']
     },   
 ]    
 const question2 = [    {
             type: 'list',
             name: 'userRole',
-            message: 'What is your role in the organization?',
-            choices: ['Engineer', 'Intern']
+            message: 'What would you like to enter next?',
+            choices: ['Engineer', 'Intern', 'Exit']
     },
     
 ]
+// map information from array
+function createDirectory (){
+    teamMembers.map(function() {
+    return '<li>' + userRole + '<li>'
+}).join('')
+};
 
 function init() {
-    inquirer.prompt(question1)
-    .then (data => {
-        if (data.managerQuestion === 'Yes') {
-            createManager();
-        } 
-        if (data.managerQuestion === 'No') {
-            inquirer.prompt(question2)
-            .then (data => { 
-                if (data.userRole === 'Engineer') {
-                createEngineer();
-                } else if (data.userRole === 'Intern') {
-                createIntern();
-                }
-            })            
-        }; 
-    })
+    createManager();
+    startStop();
+    // inquirer.prompt(question1)
+    // .then (data => {
+    //     if (data.managerQuestion === 'Yes') {
+    //         createManager();
+        // } 
+        // if (data.managerQuestion === 'No') {
+        //     inquirer.prompt(question2)
+        //     .then (data => { 
+        //         if (data.userRole === 'Engineer') {
+        //         createEngineer();
+        //         } else if (data.userRole === 'Intern') {
+        //         createIntern();
+         
+        // }
+        //     })            
+    //     }; 
+    // })
 };
+
 
 
 init ();
