@@ -1,6 +1,7 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 let fs = require('fs');
+const http = require('http');
 let path = require('path');
 const teamMembers = [];
 
@@ -46,6 +47,7 @@ function createEngineer() {
         const engineer = new Engineer(data.engineerName, data.id, data.email, data.github);
         teamMembers.push(engineer);
         console.log(teamMembers);
+        startStop();
     })
 }
 
@@ -78,6 +80,7 @@ function createIntern() {
         const intern = new Intern(data.internName, data.id, data.email, data.school);
         teamMembers.push(intern);
         console.log(teamMembers);
+        startStop();
     })
 }
 
@@ -86,22 +89,22 @@ function createManager() {
         {
             type: 'input',
             name: 'managerName',
-            message: 'What is your name?'
+            message: 'What is the managers name?'
         },
         {
             type: 'input',
             name: 'id',
-            message: 'What is your ID number?'
+            message: 'What is the managers ID number?'
         },
         {
             type: 'input',
             name: 'email',
-            message: 'What is your email address?'
+            message: 'What is the managers email address?'
         },
         {
             type: 'input',
             name: 'officeNumber',
-            message: 'What is your office phone number?'
+            message: 'What is the managers office phone number?'
         },
     ])
     .then(data => {
@@ -119,63 +122,38 @@ function createManager() {
         inquirer.prompt([
             {
                 type: 'list',
-                name: 'startStop',
+                name: 'buildTeam',
                 message: 'Would you like to enter another team member?',
                 choices: ['Intern', 'Engineer', 'Exit']
             }
-        ]) .then(data => {
-            if (data.choices === 'Intern') {
+        ])
+           .then(data => {
+            if (data.buildTeam === "Intern") {
                 createIntern();
-            } else if (data.choices === 'Engineer') {
+            } else if (data.buildTeam === "Engineer") {
                 createEngineer();
-            } else {
+            } else if (data.buildTeam === "Exit") {
                 createDirectory();
             }
         })
     }
-// fs.appendFile('./employeeDirectory.txt', teamMembers, function (err) {
-//       if (err) throw err;
-//       console.log('Saved!');
-//     });
-  
-
-// Create an array of questions for user input to determine role
-
-const question1 = [
-    {       type: 'list',
-            name: 'managerQuestion',
-            message: 'Are you ready to enter the manager information?',
-            choices: ['Yes', 'No']
-    },   
-]    
 
 // map information from array
 function createDirectory (){
-    teamMembers.map(function() {
-    return '<li>' + userRole + '<li>'
-}).join('')
+   
+    let cards = teamMembers.map.forEach(function(element) {
+    return ({Manager} + {Engineer} + {Intern})
+    }); 
+    console.log(cards + ' *****just created before the file is written****');
+    fs.writeFile('./employeeDirectory.txt', JSON.stringify(teamMembers), function (err) {
+        if (err) throw err;
+        console.log('Team Members Added!');
+    });
+    //document.getElementById("card").innerHTML = teamMembers;
 };
 
 function init() {
     createManager();
-    // startStop();
-    // inquirer.prompt(question1)
-    // .then (data => {
-    //     if (data.managerQuestion === 'Yes') {
-    //         createManager();
-        // } 
-        // if (data.managerQuestion === 'No') {
-        //     inquirer.prompt(question2)
-        //     .then (data => { 
-        //         if (data.userRole === 'Engineer') {
-        //         createEngineer();
-        //         } else if (data.userRole === 'Intern') {
-        //         createIntern();
-         
-        // }
-        //     })            
-    //     }; 
-    // })
 };
 
 
