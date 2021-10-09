@@ -31,3 +31,5 @@ Visit https://github.com/toryua to see a list of my repositories. Email me at to
 Video: https://watch.screencastify.com/v/8K7lmNNNO4xUriaEA6Eh
 
 Github: https://github.com/toryua/team-profile-generator
+
+HTML: https://toryua.github.io/team-profile-generator/
