@@ -1,1 +1,1 @@
-[{"name":"Tory","id":"123","email":"tory@tory.com","officeNumber":"123456789"}]
+[{"name":"Manager ","id":"123","email":"manager@company.com","officeNumber":"623-555-1234"},{"name":"Intern","id":"456","email":"789","school":"adfs"}]

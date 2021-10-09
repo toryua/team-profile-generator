@@ -5,6 +5,7 @@ const http = require('http');
 let path = require('path');
 const teamMembers = [];
 
+
 // create parent class for Employee
 const Employee = require('./lib/Employee.js');
 
@@ -111,7 +112,6 @@ function createManager() {
         //console.log(data);
         const manager = new Manager(data.managerName, data.id, data.email, data.officeNumber);
         teamMembers.push(manager);
-        console.log(teamMembers);
         startStop();
     })
      
@@ -138,26 +138,86 @@ function createManager() {
         })
     }
 
-// map information from array
+// map information from array & send it to HTML
 function createDirectory (){
-   
-    let cards = teamMembers.map.forEach(function(element) {
-    return ({Manager} + {Engineer} + {Intern})
-    }); 
-    console.log(cards + ' *****just created before the file is written****');
-    fs.writeFile('./employeeDirectory.txt', JSON.stringify(teamMembers), function (err) {
+
+    var htmlCards = '';   
+    const employeeCards = teamMembers.map(function(data) {
+        console.log(data.getRole());
+        switch(data.getRole()) {
+            case 'Manager':
+               return `<!DOCTYPE html>
+               <html lang = "en">
+                   <head>
+                       <meta charset="utf-8">
+                       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                       <title>Team Generator</title>
+                       <meta name="viewport" content="width=device-width, initial-scale=1">
+                       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+                       
+                   </head>
+               <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                <h5 id = "card-title" class="card-title"> ${data.getName()} </h5>
+                <p id = "card-text" class="card-text"> ID: ${data.getId()} <br/> 
+                 Email: <a href = emailto:${data.getEmail()}>${data.getEmail()}</a><br/>
+                 Office Number: ${data.getOfficeNumber()}</p>
+                </div>
+                </div>`
+                break;
+            case 'Engineer':
+                return `<div class="card" style="width: 18rem;">
+                 <div class="card-body">
+                 <h5 id = "card-title" class="card-title"> ${data.getName()} </h5>
+                 <p id = "card-text" class="card-text"> ID: ${data.getId()} <br/> 
+                  Email: <a href = emailto:${data.getEmail()}>${data.getEmail()}</a><br/>
+                  Github: <a href = https://github.com/${data.getGithub()}>${data.getGithub()}</a></p>
+                 </div>
+                 </div>` 
+                 break;
+            case 'Intern':
+                return `<div class="card" style="width: 18rem;">
+                <div class="card-body">
+                <h5 id = "card-title" class="card-title"> ${data.getName()} </h5>
+                <p id = "card-text" class="card-text"> ID: ${data.getId()} <br/> 
+                Email: <a href = emailto:${data.getEmail()}>${data.getEmail()}</a><br/>
+                School: ${data.getSchool()}</p>
+                </div>
+                </div>`
+                           
+            
+        }
+        return 
+      });
+    console.log(employeeCards) 
+    
+    for (let i = 0; i < employeeCards.length; i++) {
+        htmlCards += employeeCards[i];
+       if (i === employeeCards.length - 1) {
+           htmlCards += ` </body>
+           </html>`
+       }
+    }
+    
+    fs.writeFile('./dist/index.html', htmlCards, function (err) {
         if (err) throw err;
         console.log('Team Members Added!');
     });
-    //document.getElementById("card").innerHTML = teamMembers;
+
+    function display_array()
+    {
+        var e = "<hr/>";
+        for (var y=0; y<teamMembers.length; y++){
+            e += "Element " + y + " = " + teamMembers[y] + "<br/>";
+        }
+        
+    }
+    display_array();
+    
 };
 
 function init() {
     createManager();
 };
 
-
-
 init ();
-
-
